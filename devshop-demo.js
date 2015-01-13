@@ -25,17 +25,10 @@ if (Meteor.isClient) {
       return;
     }
 
-    Photos.insert({
-      image: imageData,
-      createdAt: new Date(),
-      marker: {
-        lat: latLng.lat,
-        lng: latLng.lng,
-        infoWindowContent: "<img width='100' src='" + imageData + "' />"
-      }
-    });
+	Session.set('justTakenImage', imageData);
+	Router.go('/add-caption');
 
-    Router.go("/list");
+	// Router.go("/list");
   };
 
   Template.layout.events({
@@ -60,5 +53,26 @@ if (Meteor.isClient) {
     photos: function () {
       return Photos.find({}, {sort: {"createdAt": -1}});
     }
+  });
+
+  Template.addCaption.events({
+	  'click .submit': function (event, templateInstance) {
+		  event.preventDefault();
+		  var latLng = Geolocation.latLng();
+		  var caption = templateInstance.$('.caption').val();
+		  // TODO(ih) try wihtout Session, get from templateInstance
+		  var imageData = Session.get('justTakenImage');
+		  var photoId = Photos.insert({
+			  image: imageData,
+			  caption: caption,
+			  createdAt: new Date(),
+			  marker: {
+				  lat: latLng.lat,
+				  lng: latLng.lng,
+				  infoWindowContent: "<img width='100' src='" + imageData + "' />"
+			  }
+		  });
+		  Router.go('/map/' + photoId);
+	  }
   });
 }

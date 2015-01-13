@@ -21,6 +21,7 @@
       <a href="/map/{{_id}}" class="item item-image">
         <img src="{{image}}" />
       </a>
+			{{caption}}
     </div>
   {{/each}}
 </template>
@@ -49,4 +50,16 @@
       List
     </a>
   </div>
+</template>
+
+
+<template name="addCaption">
+	<h2></h2>
+	<div>
+		<img src="{{imageData}}"/>
+	</div>
+	<form>
+		<input class="caption" type="text" placeholder="my best picture">
+		<button class="submit">Submit</button>
+	</form>
 </template>
