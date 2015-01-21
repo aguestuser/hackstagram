@@ -22,6 +22,13 @@ Router.map(function() {
       Session.set("currentPhoto", this.params._id);
     }
   });
+  this.route("picture", {
+    template: "picture",
+    path: '/pictures/:_id',
+    data: function () {
+      return Photos.findOne({_id: this.params._id});
+    }
+  })
   this.route('camera-page');
   this.route("list");
 });

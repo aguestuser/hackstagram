@@ -1,4 +1,4 @@
-var Photos = new Meteor.Collection("photos");
+Photos = new Meteor.Collection("photos");
 
 if (Meteor.isClient) {
   var selectedMarkerId = new Blaze.ReactiveVar(null);
@@ -69,10 +69,25 @@ if (Meteor.isClient) {
 			  marker: {
 				  lat: latLng.lat,
 				  lng: latLng.lng,
-				  infoWindowContent: "<img width='100' src='" + imageData + "' />"
+          infoWindowContent: ""
 			  }
 		  });
+      Photos.update({
+        _id: photoId
+      }, {
+        $set: {'marker.infoWindowContent': "<div>" + caption + "</div>" + "<a href='/pictures/" + photoId + "'> <img width='100' src='" + imageData + "' /></a>"
+      }});
 		  Router.go('/map/' + photoId);
 	  }
   });
+
+  Template.picture.helpers({
+    picture: function (id) {
+      return Photos.find({_id: id});
+    }
+  });
+
+  Template.picture.events({
+
+  })
 }
