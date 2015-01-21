@@ -70,7 +70,8 @@ if (Meteor.isClient) {
 				  lat: latLng.lat,
 				  lng: latLng.lng,
           infoWindowContent: ""
-			  }
+			  },
+        artist: Meteor.userId()
 		  });
       Photos.update({
         _id: photoId
