@@ -70,7 +70,13 @@
     <img src="{{image}}"/>
   </div>
   <div>
+		{{#if editingCaption}}
+		<input class="caption" type="text" value="{{caption}}">
+		<button class="save-caption">Save Caption</button>
+		{{else}}
     {{caption}}
-    <button class="edit">Edit caption</button>
+    <button class="edit-caption">Edit Caption</button>
+		{{/if}}
+
   </div>
 </template>

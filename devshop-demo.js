@@ -83,12 +83,24 @@ if (Meteor.isClient) {
   });
 
   Template.picture.helpers({
-    picture: function (id) {
-      return Photos.find({_id: id});
-    }
+      picture: function (id) {
+		  return Photos.find({_id: id});
+      },
+	  editingCaption: function () {
+		  return Session.get('editingCaption');
+	  }
   });
 
   Template.picture.events({
-
-  })
+	  'click .edit-caption': function (event,  templateInstance) {
+		  Session.set('editingCaption', true);
+	  }, 
+	  'click .save-caption': function (event,  templateInstance) {
+		  var newCaption = templateInstance.$('.caption').val();
+		  var photoId = templateInstance.data._id;
+		  Photos.update({_id: photoId}, {$set: {'caption': newCaption}});
+		  Session.set('editingCaption', false);
+		  Router.go('/pictures/' + photoId);
+	  }
+  });
 }

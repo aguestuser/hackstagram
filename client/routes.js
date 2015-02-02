@@ -28,7 +28,7 @@ Router.map(function() {
     data: function () {
       return Photos.findOne({_id: this.params._id});
     }
-  })
+  });
   this.route('camera-page');
   this.route("list");
 });
