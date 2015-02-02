@@ -76,7 +76,7 @@ if (Meteor.isClient) {
       Photos.update({
         _id: photoId
       }, {
-        $set: {'marker.infoWindowContent': "<div>" + caption + "</div>" + "<a href='/pictures/" + photoId + "'> <img width='100' src='" + imageData + "' /></a>"
+        $set: {'marker.infoWindowContent':  "<div>" + caption + "</div>" + "<a href='/pictures/" + Photoid + "'> <img width='100' src='" + imageData + "' /></a>"
       }});
 		  Router.go('/map/' + photoId);
 	  }
@@ -98,9 +98,16 @@ if (Meteor.isClient) {
 	  'click .save-caption': function (event,  templateInstance) {
 		  var newCaption = templateInstance.$('.caption').val();
 		  var photoId = templateInstance.data._id;
-		  Photos.update({_id: photoId}, {$set: {'caption': newCaption}});
+		  Photos.update({_id: photoId}, {$set: {'caption': newCaption, 'marker.infoWindowContent': getNewInfoWindow(newCaption, photoId)}});
 		  Session.set('editingCaption', false);
 		  Router.go('/pictures/' + photoId);
 	  }
   });
+}
+
+function getNewInfoWindow(caption,  id) {
+	var oldInfo =  Photos.findOne({_id: id}).marker.infoWindowContent;
+	var cMatcher = /(\<div\>).*(\<\/div\>.*)/ ;
+	var newInfo = oldInfo.replace(cMatcher, '$1'+caption+'$2');
+	return newInfo;
 }
